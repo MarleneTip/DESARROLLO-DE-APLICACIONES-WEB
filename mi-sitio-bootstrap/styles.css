@@ -1,0 +1,35 @@
+/* Botón personalizado */
+.btn-primary {
+    background-color: #d63384; /* rosado */
+    border: none;
+    transition: transform 0.3s ease, background-color 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: #6f42c1; /* morado */
+    transform: scale(1.1);
+}
+
+/* Cards */
+.card {
+    border-radius: 15px;
+}
+
+/* Animación en cards */
+.card:hover {
+    transform: translateY(-8px);
+    transition: 0.3s;
+}
+
+/* Footer */
+footer a {
+    text-decoration: none;
+    color: #6f42c1;
+}
+
+/* Media Query personalizada */
+@media (max-width: 768px) {
+    body {
+        background-color: #f8f0f5;
+    }
+}
