@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proyecto Semana 8</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- CSS propio -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- ENCABEZADO -->
+<!-- ENCABEZADO -->
+<nav class="navbar navbar-expand-lg navbar-dark lila-bg">
+
+    <div class="container">
+        <a class="navbar-brand" href="#">Mi Proyecto</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="menuNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Productos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Contacto</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- SECCIÓN PRINCIPAL -->
+<div class="container my-5">
+    <!-- BOTÓN DE ALERTA -->
+<button id="btnAlerta" class="btn btn-warning mb-5">
+    Haz clic aquí
+</button>
+
+
+    <!-- CARRUSEL -->
+    <div id="carouselExample" class="carousel slide mb-5" data-bs-ride="carousel">
+
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="https://via.placeholder.com/900x300?text=Imagen+1" class="d-block w-100" alt="Imagen 1">
+            </div>
+            <div class="carousel-item">
+                <img src="https://via.placeholder.com/900x300?text=Imagen+2" class="d-block w-100" alt="Imagen 2">
+            </div>
+            <div class="carousel-item">
+                <img src="https://via.placeholder.com/900x300?text=Imagen+3" class="d-block w-100" alt="Imagen 3">
+            </div>
+        </div>
+
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </button>
+
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </button>
+    </div>
+<!-- TABLA DE PRODUCTOS -->
+ <!-- FORMULARIO DE CONTACTO -->
+<h2 class="mb-3">Contacto</h2>
+
+<form id="contactoForm" class="mb-5">
+    <div class="mb-3">
+        <label for="nombre" class="form-label">Nombre</label>
+        <input type="text" class="form-control" id="nombre" placeholder="Ingresa tu nombre">
+    </div>
+
+    <div class="mb-3">
+        <label for="correo" class="form-label">Correo electrónico</label>
+        <input type="email" class="form-control" id="correo" placeholder="ejemplo@correo.com">
+    </div>
+
+    <div class="mb-3">
+        <label for="mensaje" class="form-label">Mensaje</label>
+        <textarea class="form-control" id="mensaje" rows="4"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Enviar</button>
+</form>
+
+<h2 class="mb-3">Lista de Productos</h2>
+
+<div class="table-responsive mb-5">
+    <table class="table table-striped table-bordered table-hover text-center">
+        <thead class="table-dark">
+            <tr>
+                <th>#</th>
+                <th>Producto</th>
+                <th>Precio</th>
+                <th>Stock</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>Producto A</td>
+                <td>$10.00</td>
+                <td>Disponible</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Producto B</td>
+                <td>$15.00</td>
+                <td>Agotado</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Producto C</td>
+                <td>$20.00</td>
+                <td>Disponible</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+</div>
+
+
+</div>
+"><!-- PIE DE PÁGINA -->
+<footer class="bg-dark text-white text-center p-3">
+    <p class="mb-1">© 2026 - Mi Proyecto Web</p>
+    <p class="mb-0">
+        Síguenos en:
+        <a href="#" class="text-warning text-decoration-none">Facebook</a> |
+        <a href="#" class="text-warning text-decoration-none">Instagram</a> |
+        <a href="#" class="text-warning text-decoration-none">Twitter</a>
+    </p>
+</footer>
+
+    <div class="container">
+        <a class="navbar-brand" href="#">Mi Proyecto</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="menuNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Productos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Contacto</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- JS propio -->
+    <script src="script.js"></script>
+</body>
+</html>
