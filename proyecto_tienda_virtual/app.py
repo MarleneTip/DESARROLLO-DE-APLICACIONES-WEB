@@ -1,14 +1,22 @@
-from flask import Flask
+from flask import Flask, render_template
 
 app = Flask(__name__)
 
-@app.route('/')
-def inicio():
-    return "Bienvenido a la tienda virtual de Cucharitas Sorpresas"
+@app.route("/")
+def home():
+    return render_template("index.html")
 
-@app.route('/producto/<nombre>')
-def producto(nombre):
-    return f"Producto: {nombre} disponible en Cucharitas Sorpresas"
+@app.route("/about")
+def about():
+    return render_template("about.html")
 
-if __name__ == '__main__':
+@app.route("/productos")
+def productos():
+    return render_template("productos.html")
+
+@app.route("/contacto")
+def contacto():
+    return render_template("contacto.html")
+
+if __name__ == "__main__":
     app.run(debug=True)
