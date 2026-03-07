@@ -93,3 +93,23 @@ def agregar():
         return redirect("/inventario")
 
     return render_template("agregar.html")
+
+def guardar_txt(nombre, precio, cantidad):
+
+    archivo = open("data/datos.txt", "a")
+
+    linea = f"{nombre},{precio},{cantidad}\n"
+
+    archivo.write(linea)
+
+    archivo.close()
+
+    def leer_txt():
+
+    archivo = open("data/datos.txt", "r")
+
+    datos = archivo.readlines()
+
+    archivo.close()
+
+    return datos
