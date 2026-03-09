@@ -58,16 +58,16 @@ def editar(id):
 @app.route("/datos")
 def ver_datos():
 
-    with open("inventario/data/datos.txt") as archivo:
+    with open("data/datos.txt") as archivo:
         datos_txt = archivo.readlines()
 
     import json
-    with open("inventario/data/datos.json") as archivo:
+    with open("data/datos.json") as archivo:
         datos_json = json.load(archivo)
 
     import csv
     datos_csv = []
-    with open("inventario/data/datos.csv") as archivo:
+    with open("data/datos.csv") as archivo:
         reader = csv.reader(archivo)
         for fila in reader:
             datos_csv.append(fila)

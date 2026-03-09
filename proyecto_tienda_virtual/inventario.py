@@ -1,4 +1,5 @@
 import json
+import csv
 
 class Producto:
     def __init__(self, id_producto, nombre, cantidad, precio):
@@ -89,7 +90,7 @@ def guardar_json(nombre, precio, cantidad):
 
 def guardar_csv(nombre, precio, cantidad):
 
-    with open("inventario/data/datos.csv", "a", newline="") as archivo:
+    with open("data/datos.csv", "a", newline="") as archivo:
 
         writer = csv.writer(archivo)
 
