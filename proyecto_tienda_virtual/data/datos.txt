@@ -1,0 +1,1 @@
+delineador,0.50,20

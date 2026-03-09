@@ -1,28 +1,89 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Inventario</title>
+    <title>Inventario - Cucharas Sorpresa</title>
+
+<style>
+
+body{
+    font-family: Arial;
+    background-color:#f4f4f4;
+    text-align:center;
+}
+
+h1{
+    color:#444;
+}
+
+table{
+    margin:auto;
+    border-collapse: collapse;
+    width:70%;
+    background:white;
+}
+
+th,td{
+    padding:10px;
+    border:1px solid #ddd;
+}
+
+th{
+    background-color:#ff69b4;
+    color:white;
+}
+
+button{
+    background-color:#ff69b4;
+    color:white;
+    border:none;
+    padding:10px 15px;
+    cursor:pointer;
+    border-radius:5px;
+}
+
+button:hover{
+    background-color:#ff1493;
+}
+
+</style>
+
 </head>
 <body>
-    <h1>Inventario de Cucharas Sorpresa</h1>
 
-    <table border="1">
-        <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Cantidad</th>
-            <th>Precio</th>
-        </tr>
+<h1>Inventario de Cucharas Sorpresa 🥄💄</h1>
 
-        {% for producto in productos %}
-        <tr>
-            <td>{{ producto[0] }}</td>
-            <td>{{ producto[1] }}</td>
-            <td>{{ producto[2] }}</td>
-            <td>{{ producto[3] }}</td>
-        </tr>
-        {% endfor %}
-    </table>
+<a href="/agregar">
+<button>Agregar producto</button>
+</a>
+
+<br><br>
+
+<table>
+
+<tr>
+<th>ID</th>
+<th>Nombre</th>
+<th>Cantidad</th>
+<th>Precio</th>
+<th>Acciones</th>
+</tr>
+
+{% for producto in productos %}
+
+<tr>
+<td>{{ producto[0] }}</td>
+<td>{{ producto[1] }}</td>
+<td>{{ producto[2] }}</td>
+<td>${{ producto[3] }}</td>
+</tr>
+<td>
+<a href="/editar/{{ producto[0] }}">
+<button>Editar</button>
+</a>
+</td>
+{% endfor %}
+
+</table>
 
 </body>
 </html>
