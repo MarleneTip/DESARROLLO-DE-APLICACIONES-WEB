@@ -1,0 +1,66 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f6f8;
+    padding: 40px;
+}
+
+h1 {
+    text-align: center;
+}
+
+form {
+    max-width: 400px;
+    margin: auto;
+    background-color: #ffffff;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.campo {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+}
+
+input.valido {
+    border-color: green;
+}
+
+input.invalido {
+    border-color: red;
+}
+
+.error {
+    color: red;
+    font-size: 12px;
+    height: 14px;
+    display: block;
+}
+
+.botones {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+button {
+    padding: 8px 15px;
+    cursor: pointer;
+}
+
+button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}

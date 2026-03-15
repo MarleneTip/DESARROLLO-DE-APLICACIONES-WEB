@@ -1,0 +1,2 @@
+delineador,0.50,20
+labiales,1.50,10
