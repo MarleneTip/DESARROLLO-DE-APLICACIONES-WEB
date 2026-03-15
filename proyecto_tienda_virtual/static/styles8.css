@@ -1,0 +1,21 @@
+body {
+    background-color: #f4f6f9;
+}
+
+    h2 {
+    color: #9b59b6;
+}
+
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+/* Color lila personalizado */
+.lila-bg {
+    background-color: #9b59b6;
+}
+
+.lila-text {
+    color: #9b59b6;
+}

@@ -1,35 +1,18 @@
-import sqlite3
+from conexion.conexion import obtener_conexion
+
 
 def conectar():
-    conexion = sqlite3.connect("tienda.db")
-    return conexion
+    return obtener_conexion()
 
 
-def crear_tablas():
+def insertar_producto(id_producto, nombre, cantidad, precio):
     conexion = conectar()
     cursor = conexion.cursor()
 
     cursor.execute("""
-        CREATE TABLE IF NOT EXISTS productos (
-            id INTEGER PRIMARY KEY,
-            nombre TEXT NOT NULL,
-            cantidad INTEGER NOT NULL,
-            precio REAL NOT NULL
-        )
-    """)
-
-    conexion.commit()
-    conexion.close()
-
-
-def insertar_producto(id, nombre, cantidad, precio):
-    conexion = conectar()
-    cursor = conexion.cursor()
-
-    cursor.execute("""
-        INSERT INTO productos (id, nombre, cantidad, precio)
-        VALUES (?, ?, ?, ?)
-    """, (id, nombre, cantidad, precio))
+        INSERT INTO productos (id_producto, nombre, cantidad, precio)
+        VALUES (%s, %s, %s, %s)
+    """, (id_producto, nombre, cantidad, precio))
 
     conexion.commit()
     conexion.close()
@@ -50,32 +33,17 @@ def eliminar_producto_db(id_producto):
     conexion = conectar()
     cursor = conexion.cursor()
 
-    cursor.execute("DELETE FROM productos WHERE id = ?", (id_producto,))
+    cursor.execute("DELETE FROM productos WHERE id_producto=%s", (id_producto,))
 
     conexion.commit()
     conexion.close()
 
 
-def actualizar_producto_db(id_producto, cantidad, precio):
+def obtener_producto(id_producto):
     conexion = conectar()
     cursor = conexion.cursor()
 
-    cursor.execute("""
-        UPDATE productos
-        SET cantidad = ?, precio = ?
-        WHERE id = ?
-    """, (cantidad, precio, id_producto))
-
-    conexion.commit()
-    conexion.close()
-
-    import sqlite3
-
-def obtener_producto(id_producto):
-    conexion = sqlite3.connect("tienda.db")
-    cursor = conexion.cursor()
-
-    cursor.execute("SELECT * FROM productos WHERE id=?", (id_producto,))
+    cursor.execute("SELECT * FROM productos WHERE id_producto=%s", (id_producto,))
     producto = cursor.fetchone()
 
     conexion.close()
@@ -83,14 +51,25 @@ def obtener_producto(id_producto):
 
 
 def actualizar_producto(id_producto, nombre, cantidad, precio):
-    conexion = sqlite3.connect("tienda.db")
+    conexion = conectar()
     cursor = conexion.cursor()
 
     cursor.execute("""
         UPDATE productos
-        SET nombre=?, cantidad=?, precio=?
-        WHERE id=?
+        SET nombre=%s, cantidad=%s, precio=%s
+        WHERE id_producto=%s
     """, (nombre, cantidad, precio, id_producto))
+
+    conexion.commit()
+    conexion.close()
+def insertar_usuario(nombre, mail, password):
+    conexion = conectar()
+    cursor = conexion.cursor()
+
+    cursor.execute("""
+        INSERT INTO usuarios (nombre, mail, password)
+        VALUES (%s, %s, %s)
+    """, (nombre, mail, password))
 
     conexion.commit()
     conexion.close()
