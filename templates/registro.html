@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}Registro de Cliente{% endblock %}
+
+{% block content %}
+<div class="contenedor">
+    <h2>Registro para comprar</h2>
+    <p>Regístrate para comprar tu cucharita sorpresa</p>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <p class="flash {{ category }}">{{ message }}</p>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST">
+        <input type="text" name="nombre" placeholder="Nombre" required>
+        <input type="email" name="mail" placeholder="Correo electrónico" required>
+        <input type="password" name="password" placeholder="Contraseña" required>
+        <button type="submit">Registrarse</button>
+    </form>
+</div>
+
+<style>
+.contenedor{
+    background:white;
+    width:350px;
+    margin:auto;
+    margin-top:50px;
+    padding:30px;
+    border-radius:10px;
+    box-shadow:0px 0px 10px rgba(0,0,0,0.2);
+}
+
+input{
+    width:90%;
+    padding:10px;
+    margin:10px 0;
+    border-radius:5px;
+    border:1px solid #ccc;
+}
+
+button{
+    background:#ff69b4;
+    color:white;
+    border:none;
+    padding:10px 20px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#ff4fa3;
+}
+
+.flash.success{
+    color:green;
+    font-weight:bold;
+}
+
+.flash.danger{
+    color:red;
+    font-weight:bold;
+}
+</style>
+{% endblock %}

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Datos Guardados</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f4f4f4;
+text-align:center;
+}
+
+table{
+margin:auto;
+border-collapse:collapse;
+width:60%;
+background:white;
+}
+
+th,td{
+padding:10px;
+border:1px solid #ccc;
+}
+
+th{
+background:#ff69b4;
+color:white;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Datos guardados en archivos</h1>
+
+<h2>Datos TXT</h2>
+
+<ul>
+{% for linea in txt %}
+<li>{{ linea }}</li>
+{% endfor %}
+</ul>
+
+<h2>Datos JSON</h2>
+
+<table>
+
+<tr>
+<th>Nombre</th>
+<th>Precio</th>
+<th>Cantidad</th>
+</tr>
+
+{% for item in json %}
+<tr>
+<td>{{ item.nombre }}</td>
+<td>{{ item.precio }}</td>
+<td>{{ item.cantidad }}</td>
+</tr>
+{% endfor %}
+
+</table>
+
+<br>
+
+<h2>Datos CSV</h2>
+
+<table>
+
+{% for fila in csv %}
+<tr>
+{% for dato in fila %}
+<td>{{ dato }}</td>
+{% endfor %}
+</tr>
+{% endfor %}
+
+</table>
+
+<br>
+
+<a href="/inventario">Volver al inventario</a>
+
+</body>
+</html>
