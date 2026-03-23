@@ -2,9 +2,48 @@ from flask import Flask, render_template, request, redirect, flash, url_for
 from database import obtener_productos, insertar_producto, insertar_usuario
 from inventario import guardar_txt, guardar_json, guardar_csv
 from database import obtener_producto, actualizar_producto
+from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
+from flask_mysqldb import MySQL
 
+# Crear app
 app = Flask(__name__)
-app.secret_key = "clave_secreta"  # útil si luego agregas flash messages
+app.secret_key = "clave_secreta"
+
+# Configuración MySQL
+app.config['MYSQL_HOST'] = 'localhost'
+app.config['MYSQL_USER'] = 'root'
+app.config['MYSQL_PASSWORD'] = ''
+app.config['MYSQL_DB'] = 'inventario'
+
+mysql = MySQL(app)
+
+# Configuración Flask-Login
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = "login"
+login_manager.login_view = "login"
+login_manager.login_message = "Debes iniciar sesión"
+# Modelo de usuario
+class Usuario(UserMixin):
+    def __init__(self, id, nombre, email, password):
+        self.id = str(id)
+        self.nombre = nombre
+        self.email = email
+        self.password = password
+
+# Cargar usuario desde la BD
+@login_manager.user_loader
+def load_user(user_id):
+    cursor = mysql.connection.cursor()
+    cursor.execute("SELECT * FROM usuarios WHERE id_usuario = %s", (int(user_id),))
+    user = cursor.fetchone()
+    cursor.close()
+
+    if user:
+        return Usuario(user[0], user[1], user[2], user[3])
+    return None
+
+
 
 # -------------------------
 # Rutas existentes del proyecto
@@ -13,16 +52,18 @@ app.secret_key = "clave_secreta"  # útil si luego agregas flash messages
 # Página principal
 @app.route("/")
 def inicio():
-    return redirect("/inventario")
+    return redirect("/login")
 
 # Mostrar inventario
 @app.route("/inventario")
+@login_required
 def ver_inventario():
     productos = obtener_productos()
     return render_template("inventario.html", productos=productos)
 
 # Agregar productos
 @app.route("/agregar", methods=["GET", "POST"])
+@login_required
 def agregar():
     if request.method == "POST":
         id_producto = request.form["id"]
@@ -42,6 +83,7 @@ def agregar():
 
 # Editar producto
 @app.route("/editar/<id>", methods=["GET", "POST"])
+@login_required
 def editar(id):
     if request.method == "POST":
         nombre = request.form["nombre"]
@@ -56,6 +98,7 @@ def editar(id):
 
 # Ver datos
 @app.route("/datos")
+@login_required
 def ver_datos():
     import json, csv
 
@@ -100,20 +143,26 @@ def pagina_contacto():
 @app.route("/registro", methods=["GET", "POST"])
 def registro():
     if request.method == "POST":
-        nombre = request.form["nombre"]
-        mail = request.form["mail"]
-        password = request.form["password"]
+        nombre = request.form.get("nombre")
+        email = request.form.get("email")
+        password = request.form.get("password")
+
+        print(request.form)
 
         try:
-            # Inserta el usuario en la base de datos
-            insertar_usuario(nombre, mail, password)
-            
-            # Mensaje de éxito
+            cursor = mysql.connection.cursor()
+            cursor.execute(
+                "INSERT INTO usuarios (nombre, email, password) VALUES (%s, %s, %s)",
+                (nombre, email, password)
+            )
+            mysql.connection.commit()
+            cursor.close()
+
             flash("Usuario registrado correctamente", "success")
-            return redirect("/registro")
+            return redirect("/login")
+
         except Exception as e:
-            # Mensaje de error
-            flash(f"Error al registrar usuario: {e}", "danger")
+            flash(f"Error: {e}", "danger")
             return redirect("/registro")
 
     return render_template("registro.html")
@@ -122,6 +171,37 @@ def registro():
 @app.route("/prueba")
 def prueba():
     return "Ruta funcionando"
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        email = request.form.get("email")
+        password = request.form.get("password")
+
+        cursor = mysql.connection.cursor()
+        cursor.execute("SELECT * FROM usuarios WHERE email = %s", (email,))
+        user = cursor.fetchone()
+        cursor.close()
+
+        print("USUARIO:", user)
+        print("PASSWORD INGRESADO:", password)
+
+        if user and user[3] == password:
+            usuario = Usuario(user[0], user[1], user[2], user[3])
+            login_user(usuario)
+            print("LOGIN EXITOSO")
+            return redirect("/inventario")
+        else:
+            print("LOGIN FALLÓ")
+            flash("Correo o contraseña incorrectos")
+
+    return render_template("login.html")
+
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect("/login")
 
 # -------------------------
 # Ejecutar la app
