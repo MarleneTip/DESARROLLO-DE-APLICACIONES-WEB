@@ -10,10 +10,10 @@ app = Flask(__name__)
 app.secret_key = "clave_secreta"
 
 # Configuración MySQL
-app.config['MYSQL_HOST'] = 'localhost'
+app.config['MYSQL_HOST'] = 'mysql.railway.internal'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = ''
-app.config['MYSQL_DB'] = 'inventario'
+app.config['MYSQL_PASSWORD'] = 'jdPUeMKJyKbjtzlOCaJKrFkvuUtrmiWg'
+app.config['MYSQL_DB'] = 'railway'
 
 mysql = MySQL(app)
 
