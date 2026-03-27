@@ -14,6 +14,7 @@ app.config['MYSQL_HOST'] = 'crossover.proxy.rlwy.net'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = 'jdPUeMKJyKbjtzlOCaJKrFkvuUtrmiWg'
 app.config['MYSQL_DB'] = 'railway'
+app.config['MYSQL_PORT'] = 50852
 
 mysql = MySQL(app)
 
