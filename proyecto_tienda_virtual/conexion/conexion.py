@@ -5,7 +5,7 @@ def obtener_conexion():
         host="mysql.railway.internal",
         user="root",
         password="jdPUeMKJyKbjtzlOCaJKrFkvuUtrmiWg",
-        database="railway"
+        database="railway",
         port=3306
     )
     return conexion
