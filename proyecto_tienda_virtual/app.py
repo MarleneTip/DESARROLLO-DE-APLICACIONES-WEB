@@ -77,7 +77,7 @@ def agregar():
         guardar_json(nombre, precio, cantidad)
         guardar_csv(nombre, precio, cantidad)
 
-        return redirect("/inventario")
+        return redirect("/productos")
 
     return render_template("agregar.html")
 
