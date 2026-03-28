@@ -120,9 +120,6 @@ def ver_datos():
                            csv=datos_csv)
 
 # Otras páginas
-@app.route("/inicio")
-def pagina_inicio():
-    return render_template("inicio.html")
 
 @app.route("/productos")
 def pagina_productos():
@@ -203,6 +200,11 @@ def login():
 def logout():
     logout_user()
     return redirect("/login")
+
+@app.route("/carrito")
+def ver_carrito():
+    carrito = request.args.getlist("producto")
+    return render_template("carrito.html", carrito=carrito)
 
 # -------------------------
 # Ejecutar la app

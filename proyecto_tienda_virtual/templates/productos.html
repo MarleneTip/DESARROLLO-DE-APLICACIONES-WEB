@@ -17,7 +17,9 @@
         
         <p><strong>Disponible:</strong> {{ p[3] }}</p> <!-- cantidad -->
 
-        <button>Agregar al carrito</button>
+        <a href="/carrito?producto={{ p[1] }}">
+    <button>Agregar al carrito</button>
+</a>
 
     </div>
     {% endfor %}
