@@ -1,9 +1,10 @@
 from flask import Flask, render_template, request, redirect, flash, url_for
-from database import obtener_productos, insertar_producto, insertar_usuario
+from models.database import obtener_productos, insertar_producto, insertar_usuario
 from inventario import guardar_txt, guardar_json, guardar_csv
-from database import obtener_producto, actualizar_producto
+from models.database import obtener_producto, actualizar_producto
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 from flask_mysqldb import MySQL
+from services.producto_service import listar_productos, crear_producto, editar_producto, borrar_producto
 
 # Crear app
 app = Flask(__name__)
@@ -59,7 +60,7 @@ def inicio():
 @app.route("/inventario")
 @login_required
 def ver_inventario():
-    productos = obtener_productos()
+    productos = listar_productos()
     return render_template("inventario.html", productos=productos)
 
 # Agregar productos
@@ -205,6 +206,12 @@ def logout():
 def ver_carrito():
     carrito = request.args.getlist("producto")
     return render_template("carrito.html", carrito=carrito)
+
+@app.route("/eliminar/<id>")
+@login_required
+def eliminar(id):
+    eliminar_producto(id)
+    return redirect("/inventario")
 
 # -------------------------
 # Ejecutar la app
