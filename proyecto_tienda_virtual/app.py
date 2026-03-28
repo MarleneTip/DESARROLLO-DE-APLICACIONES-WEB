@@ -17,7 +17,6 @@ app.config['MYSQL_DB'] = 'railway'
 app.config['MYSQL_PORT'] = 50852
 
 mysql = MySQL(app)
-git add .
 
 # Configuración Flask-Login
 login_manager = LoginManager()
