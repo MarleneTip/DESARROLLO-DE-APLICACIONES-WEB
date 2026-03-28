@@ -54,7 +54,7 @@ def load_user(user_id):
 # Página principal
 @app.route("/")
 def inicio():
-    return redirect("/login")
+    return render_template("index.html")
 
 # Mostrar inventario
 @app.route("/inventario")
