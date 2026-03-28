@@ -3,10 +3,25 @@
 {% block title %}Productos{% endblock %}
 
 {% block content %}
-<h2>Nuestras Cucharas Sorpresa</h2>
-<ul>
-    <li>Cuchara Básica - $8</li>
-    <li>Cuchara Premium - $10</li>
-    <li>Cuchara Deluxe - $12</li>
-</ul>
+
+<h2>Nuestras Cucharas Sorpresa 🛍️</h2>
+
+<div style="display: flex; flex-wrap: wrap;">
+
+    {% for p in productos %}
+    <div style="border:1px solid #ccc; padding:15px; margin:10px; width:200px; border-radius:10px;">
+        
+        <h3>{{ p[1] }}</h3> <!-- nombre -->
+        
+        <p><strong>Precio:</strong> ${{ p[2] }}</p> <!-- precio -->
+        
+        <p><strong>Disponible:</strong> {{ p[3] }}</p> <!-- cantidad -->
+
+        <button>Agregar al carrito</button>
+
+    </div>
+    {% endfor %}
+
+</div>
+
 {% endblock %}
