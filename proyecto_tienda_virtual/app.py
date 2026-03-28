@@ -17,6 +17,7 @@ app.config['MYSQL_DB'] = 'railway'
 app.config['MYSQL_PORT'] = 50852
 
 mysql = MySQL(app)
+git add .
 
 # Configuración Flask-Login
 login_manager = LoginManager()
@@ -67,12 +68,11 @@ def ver_inventario():
 @login_required
 def agregar():
     if request.method == "POST":
-        id_producto = request.form["id"]
         nombre = request.form["nombre"]
         cantidad = request.form["cantidad"]
         precio = request.form["precio"]
 
-        insertar_producto(id_producto, nombre, cantidad, precio)
+
 
         guardar_txt(nombre, precio, cantidad)
         guardar_json(nombre, precio, cantidad)
