@@ -126,7 +126,8 @@ def pagina_inicio():
 
 @app.route("/productos")
 def pagina_productos():
-    return render_template("productos.html")
+    productos = obtener_productos()
+    return render_template("productos.html", productos=productos)
 
 @app.route("/about")
 def pagina_about():
