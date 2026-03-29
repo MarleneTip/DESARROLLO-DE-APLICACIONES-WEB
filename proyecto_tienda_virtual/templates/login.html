@@ -1,7 +1,81 @@
-<h2>Login</h2>
+{% extends "base.html" %}
 
-<form method="POST">
-    <input type="email" name="email" placeholder="Correo" required><br>
-    <input type="password" name="password" placeholder="Contraseña" required><br>
-    <button type="submit">Iniciar sesión</button>
-</form>
+{% block title %}Iniciar Sesión{% endblock %}
+
+{% block content %}
+<div class="contenedor">
+    <h2>Iniciar sesión</h2>
+    <p>Ingresa para acceder a tu cuenta</p>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <p class="flash {{ category }}">{{ message }}</p>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST">
+        <input type="email" name="email" placeholder="Correo electrónico" required>
+        <input type="password" name="password" placeholder="Contraseña" required>
+        
+        <button type="submit">Iniciar sesión</button>
+    </form>
+
+    <!-- 🔥 NUEVO -->
+    <p style="margin-top:15px; text-align:center;">
+        ¿No tienes cuenta?
+        <a href="{{ url_for('registro') }}">Regístrate aquí</a>
+    </p>
+</div>
+
+<style>
+.contenedor{
+    background:white;
+    width:350px;
+    margin:auto;
+    margin-top:50px;
+    padding:30px;
+    border-radius:10px;
+    box-shadow:0px 0px 15px rgba(0,0,0,0.2);
+    text-align:center;
+}
+
+h2{
+    margin-bottom:10px;
+}
+
+input{
+    width:90%;
+    padding:12px;
+    margin:10px 0;
+    border-radius:5px;
+    border:1px solid #ccc;
+}
+
+button{
+    background:#ff69b4;
+    color:white;
+    border:none;
+    padding:12px;
+    width:100%;
+    border-radius:5px;
+    cursor:pointer;
+    font-size:16px;
+}
+
+button:hover{
+    background:#ff4fa3;
+}
+
+.flash.success{
+    color:green;
+    font-weight:bold;
+}
+
+.flash.danger{
+    color:red;
+    font-weight:bold;
+}
+</style>
+{% endblock %}
