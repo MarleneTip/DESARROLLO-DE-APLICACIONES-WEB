@@ -19,8 +19,16 @@
         <input type="text" name="nombre" placeholder="Nombre" required>
         <input type="email" name="email" placeholder="Correo electrónico" required>
         <input type="password" name="password" placeholder="Contraseña" required>
+        
         <button type="submit">Registrarse</button>
     </form>
+
+    <!-- 🔥 NUEVO -->
+    <p style="margin-top:15px; text-align:center;">
+        ¿Ya tienes cuenta?
+        <a href="{{ url_for('login') }}">Inicia sesión aquí</a>
+    </p>
+
 </div>
 
 <style>
