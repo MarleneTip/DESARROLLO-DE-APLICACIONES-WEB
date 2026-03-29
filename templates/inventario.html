@@ -45,18 +45,39 @@ button:hover{
     background-color:#ff1493;
 }
 
+.btn-danger{
+    background-color:red;
+}
+
+.btn-danger:hover{
+    background-color:darkred;
+}
+
+.top-buttons{
+    margin: 20px;
+}
+
 </style>
 
 </head>
+
 <body>
 
 <h1>Inventario de Cucharas Sorpresa 🥄💄</h1>
 
-<a href="/agregar">
-<button>Agregar producto</button>
-</a>
+<div class="top-buttons">
 
-<br><br>
+    <a href="/agregar">
+        <button>Agregar producto</button>
+    </a>
+
+    <a href="/reporte/pdf">
+        <button style="background:#333;">Descargar PDF</button>
+    </a>
+
+</div>
+
+<br>
 
 <table>
 
@@ -69,18 +90,24 @@ button:hover{
 </tr>
 
 {% for producto in productos %}
-
 <tr>
-<td>{{ producto[0] }}</td>
-<td>{{ producto[1] }}</td>
-<td>{{ producto[2] }}</td>
-<td>${{ producto[3] }}</td>
+    <td>{{ producto[0] }}</td>
+    <td>{{ producto[1] }}</td>
+    <td>{{ producto[2] }}</td>
+    <td>${{ producto[3] }}</td>
+
+    <td>
+
+        <a href="/editar/{{ producto[0] }}">
+            <button>Editar</button>
+        </a>
+
+        <a href="/eliminar/{{ producto[0] }}">
+            <button class="btn-danger">Eliminar</button>
+        </a>
+
+    </td>
 </tr>
-<td>
-<a href="/editar/{{ producto[0] }}">
-<button>Editar</button>
-</a>
-</td>
 {% endfor %}
 
 </table>

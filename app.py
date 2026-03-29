@@ -1,26 +1,29 @@
 from flask import Flask, render_template, request, redirect, flash, url_for
-from database import obtener_productos, insertar_producto, insertar_usuario
-from inventario import guardar_txt, guardar_json, guardar_csv
-from database import obtener_producto, actualizar_producto
+
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
-from flask_mysqldb import MySQL
+
+from services.producto_service import (
+    listar_productos,
+    crear_producto,
+    editar_producto,
+    borrar_producto,
+    buscar_usuario
+)
+
+from models.database import obtener_producto, obtener_productos, conectar 
+from reportlab.pdfgen import canvas
+from io import BytesIO
+from flask import make_response
+
+ADMIN_EMAIL = "marlenetip.mimi@gmail.com"
 
 # Crear app
 app = Flask(__name__)
 app.secret_key = "clave_secreta"
 
-# Configuración MySQL
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = ''
-app.config['MYSQL_DB'] = 'inventario'
-
-mysql = MySQL(app)
-
 # Configuración Flask-Login
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = "login"
 login_manager.login_view = "login"
 login_manager.login_message = "Debes iniciar sesión"
 # Modelo de usuario
@@ -34,15 +37,20 @@ class Usuario(UserMixin):
 # Cargar usuario desde la BD
 @login_manager.user_loader
 def load_user(user_id):
-    cursor = mysql.connection.cursor()
-    cursor.execute("SELECT * FROM usuarios WHERE id_usuario = %s", (int(user_id),))
+    conexion = conectar()
+    cursor = conexion.cursor()
+
+    cursor.execute(
+        "SELECT * FROM usuarios WHERE id_usuario = %s",
+        (int(user_id),)
+    )
     user = cursor.fetchone()
-    cursor.close()
+
+    conexion.close()
 
     if user:
         return Usuario(user[0], user[1], user[2], user[3])
     return None
-
 
 
 # -------------------------
@@ -52,30 +60,27 @@ def load_user(user_id):
 # Página principal
 @app.route("/")
 def inicio():
-    return redirect("/login")
+    return render_template("index.html")
 
 # Mostrar inventario
 @app.route("/inventario")
 @login_required
-def ver_inventario():
-    productos = obtener_productos()
+def inventario():
+    productos = listar_productos()
     return render_template("inventario.html", productos=productos)
 
-# Agregar productos
 @app.route("/agregar", methods=["GET", "POST"])
 @login_required
 def agregar():
+    if current_user.email != ADMIN_EMAIL:
+        return redirect("/inventario")
+
     if request.method == "POST":
-        id_producto = request.form["id"]
         nombre = request.form["nombre"]
         cantidad = request.form["cantidad"]
         precio = request.form["precio"]
 
-        insertar_producto(id_producto, nombre, cantidad, precio)
-
-        guardar_txt(nombre, precio, cantidad)
-        guardar_json(nombre, precio, cantidad)
-        guardar_csv(nombre, precio, cantidad)
+        crear_producto(nombre, cantidad, precio)
 
         return redirect("/inventario")
 
@@ -85,12 +90,15 @@ def agregar():
 @app.route("/editar/<id>", methods=["GET", "POST"])
 @login_required
 def editar(id):
+    if current_user.email != ADMIN_EMAIL:
+        return redirect("/inventario")
+
     if request.method == "POST":
         nombre = request.form["nombre"]
         cantidad = request.form["cantidad"]
         precio = request.form["precio"]
 
-        actualizar_producto(id, nombre, cantidad, precio)
+        editar_producto(id, nombre, cantidad, precio)
         return redirect("/inventario")
 
     producto = obtener_producto(id)
@@ -120,13 +128,11 @@ def ver_datos():
                            csv=datos_csv)
 
 # Otras páginas
-@app.route("/inicio")
-def pagina_inicio():
-    return render_template("inicio.html")
 
 @app.route("/productos")
 def pagina_productos():
-    return render_template("productos.html")
+    productos = obtener_productos()
+    return render_template("productos.html", productos=productos)
 
 @app.route("/about")
 def pagina_about():
@@ -139,7 +145,6 @@ def pagina_contacto():
 # -------------------------
 # NUEVAS RUTAS: Registro y prueba
 # -------------------------
-
 @app.route("/registro", methods=["GET", "POST"])
 def registro():
     if request.method == "POST":
@@ -150,13 +155,16 @@ def registro():
         print(request.form)
 
         try:
-            cursor = mysql.connection.cursor()
+            conexion = conectar()
+            cursor = conexion.cursor()
+
             cursor.execute(
                 "INSERT INTO usuarios (nombre, email, password) VALUES (%s, %s, %s)",
                 (nombre, email, password)
             )
-            mysql.connection.commit()
-            cursor.close()
+
+            conexion.commit()
+            conexion.close()
 
             flash("Usuario registrado correctamente", "success")
             return redirect("/login")
@@ -166,7 +174,6 @@ def registro():
             return redirect("/registro")
 
     return render_template("registro.html")
-
 
 @app.route("/prueba")
 def prueba():
@@ -178,10 +185,8 @@ def login():
         email = request.form.get("email")
         password = request.form.get("password")
 
-        cursor = mysql.connection.cursor()
-        cursor.execute("SELECT * FROM usuarios WHERE email = %s", (email,))
-        user = cursor.fetchone()
-        cursor.close()
+        # buscar usuario desde service
+        user = buscar_usuario(email)
 
         print("USUARIO:", user)
         print("PASSWORD INGRESADO:", password)
@@ -190,7 +195,7 @@ def login():
             usuario = Usuario(user[0], user[1], user[2], user[3])
             login_user(usuario)
             print("LOGIN EXITOSO")
-            return redirect("/inventario")
+            return redirect("/")
         else:
             print("LOGIN FALLÓ")
             flash("Correo o contraseña incorrectos")
@@ -202,6 +207,45 @@ def login():
 def logout():
     logout_user()
     return redirect("/login")
+
+@app.route("/carrito")
+def ver_carrito():
+    carrito = request.args.getlist("producto")
+    return render_template("carrito.html", carrito=carrito)
+
+@app.route("/eliminar/<id>")
+@login_required
+def eliminar(id):
+    if current_user.email != ADMIN_EMAIL:
+        return redirect("/inventario")
+
+    borrar_producto(id)
+    return redirect("/inventario")
+
+@app.route("/reporte/pdf")
+@login_required
+def generar_pdf():
+
+    productos = listar_productos()
+
+    buffer = BytesIO()
+    pdf = canvas.Canvas(buffer)
+
+    pdf.drawString(100, 800, "REPORTE DE PRODUCTOS")
+
+    y = 750
+    for p in productos:
+        pdf.drawString(100, y, f"{p}")
+        y -= 20
+
+    pdf.save()
+
+    buffer.seek(0)
+
+    return make_response(buffer.getvalue(), {
+        "Content-Type": "application/pdf",
+        "Content-Disposition": "inline; filename=reporte.pdf"
+    })
 
 # -------------------------
 # Ejecutar la app

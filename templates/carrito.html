@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Carrito{% endblock %}
+
+{% block content %}
+
+<h2 style="text-align:center; color:#ff1493;">
+Carrito de Compras 🛒
+</h2>
+
+{% if carrito %}
+
+<div style="display:flex; flex-wrap:wrap; justify-content:center;">
+
+    {% for item in carrito %}
+    <div style="
+        background:#fff0f5;
+        border:2px solid #ff69b4;
+        border-radius:15px;
+        padding:20px;
+        margin:15px;
+        width:200px;
+        text-align:center;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    ">
+        <h3 style="color:#ff1493;">{{ item }}</h3>
+        <p style="color:#555;">Producto agregado</p>
+    </div>
+    {% endfor %}
+
+</div>
+
+<div style="text-align:center; margin-top:30px;">
+    <button style="
+        background:#ff1493;
+        color:white;
+        padding:15px 25px;
+        border:none;
+        border-radius:10px;
+        font-size:18px;
+        cursor:pointer;
+    ">
+        Finalizar Compra 💳
+    </button>
+</div>
+
+{% else %}
+
+<p style="text-align:center; font-size:18px;">
+No hay productos en el carrito 😢
+</p>
+
+{% endif %}
+
+{% endblock %}

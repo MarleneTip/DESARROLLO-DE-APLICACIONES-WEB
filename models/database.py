@@ -5,14 +5,14 @@ def conectar():
     return obtener_conexion()
 
 
-def insertar_producto(id_producto, nombre, cantidad, precio):
+def insertar_producto(nombre, cantidad, precio):
     conexion = conectar()
     cursor = conexion.cursor()
 
     cursor.execute("""
-        INSERT INTO productos (id_producto, nombre, cantidad, precio)
-        VALUES (%s, %s, %s, %s)
-    """, (id_producto, nombre, cantidad, precio))
+        INSERT INTO productos (nombre, cantidad, precio)
+        VALUES (%s, %s, %s)
+    """, (nombre, cantidad, precio))
 
     conexion.commit()
     conexion.close()
@@ -29,7 +29,7 @@ def obtener_productos():
     return productos
 
 
-def eliminar_producto_db(id_producto):
+def eliminar_producto(id_producto):
     conexion = conectar()
     cursor = conexion.cursor()
 
