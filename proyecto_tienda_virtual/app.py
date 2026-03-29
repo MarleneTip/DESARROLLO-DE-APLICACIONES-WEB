@@ -247,6 +247,9 @@ def generar_pdf():
         "Content-Disposition": "inline; filename=reporte.pdf"
     })
 
+@app.route('/carrito')
+def ver_carrito():
+    return render_template('carrito.html')
 # -------------------------
 # Ejecutar la app
 # -------------------------
