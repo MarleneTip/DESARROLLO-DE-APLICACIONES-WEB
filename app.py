@@ -209,9 +209,15 @@ def logout():
     return redirect("/login")
 
 @app.route("/carrito")
+@login_required
 def ver_carrito():
     carrito = request.args.getlist("producto")
     return render_template("carrito.html", carrito=carrito)
+
+@app.route("/finalizar_compra")
+@login_required
+def finalizar_compra():
+    return render_template("compra_exitosa.html")
 
 @app.route("/eliminar/<id>")
 @login_required
@@ -247,9 +253,6 @@ def generar_pdf():
         "Content-Disposition": "inline; filename=reporte.pdf"
     })
 
-@app.route('/carrito')
-def ver_carrito():
-    return render_template('carrito.html')
 # -------------------------
 # Ejecutar la app
 # -------------------------
